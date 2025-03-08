@@ -68,4 +68,9 @@ public class PlayerService {
                 .collect(Collectors.toList());
     }
 
+    public TournementSummaryDTO getTournementSummary() {
+        return new TournementSummaryDTO(playerRepo.countTotalRuns(), playerRepo.countAllWickets(),
+                modelMapper.map(playerRepo.findPlayerWithMaxRuns(), PlayerDTO.class),
+                modelMapper.map(playerRepo.findPlayerWithMaxWickets(), PlayerDTO.class));
+    }
 }
