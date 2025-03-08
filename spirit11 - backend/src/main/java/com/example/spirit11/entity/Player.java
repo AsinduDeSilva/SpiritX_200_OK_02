@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "players")
 @Data
@@ -24,4 +26,7 @@ public class Player {
     private int oversBowled;
     private int runsConceded;
     private boolean isEditable;
+
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserPlayerDetails> playerUsers;
 }
