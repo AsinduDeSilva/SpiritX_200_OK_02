@@ -30,23 +30,27 @@ public class PlayerController {
                     .status(HttpStatus.NOT_FOUND)
                     .body(new CRUDResponseDTO<>(false, "Player not found"));
         }
-        return ResponseEntity.ok(new CRUDResponseDTO<PlayerDTO>(true, "Player found", player));
+        return ResponseEntity.ok(new CRUDResponseDTO<>(true, "Player found", player));
     }
 
     @PostMapping
     public ResponseEntity<CRUDResponseDTO<PlayerDTO>> addPlayer(@RequestBody PlayerDTO playerDTO) {
+        playerDTO.setEditable(true);
         playerService.savePlayer(playerDTO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new CRUDResponseDTO<>(true, "Successfully added player"));
     }
 
-    @PutMapping
-    public ResponseEntity<CRUDResponseDTO<PlayerDTO>> updatePlayer(@RequestBody PlayerDTO playerDTO) {
-        playerService.updatePlayer(playerDTO);
-        return ResponseEntity.ok(new CRUDResponseDTO<>(true, "Successfully updated player"));
-    }
+    @PutMapping("/{id}")
+    public ResponseEntity<CRUDResponseDTO<PlayerDTO>> updatePlayer(@PathVariable Long id, @RequestBody PlayerDTO playerDTO) {
+        boolean isUpdated = playerService.updatePlayer(id, playerDTO);
+        if(isUpdated) {
+            return ResponseEntity.ok(new CRUDResponseDTO<>(true, "Successfully updated player"));
+        }
+        return ResponseEntity.ok(new CRUDResponseDTO<>(false, "Player update failed"));
 
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<CRUDResponseDTO<PlayerDTO>> deletePlayer(@PathVariable Long id) {

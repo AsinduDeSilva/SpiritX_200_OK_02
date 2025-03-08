@@ -36,8 +36,24 @@ public class PlayerService {
         playerRepo.save(modelMapper.map(playerDTO, Player.class));
     }
 
-    public void updatePlayer(PlayerDTO playerDTO) {
-        playerRepo.save(modelMapper.map(playerDTO, Player.class));
+    public boolean updatePlayer(Long id, PlayerDTO playerDTO) {
+        Optional<Player> player = playerRepo.findById(id);
+        if(player.isEmpty()) {
+            return false;
+        }
+        Player player1 = player.get();
+
+        player1.setName(playerDTO.getName());
+        player1.setCategory(playerDTO.getCategory());
+        player1.setTotalRuns(playerDTO.getTotalRuns());
+        player1.setBallsFaced(playerDTO.getBallsFaced());
+        player1.setInningsPlayed(playerDTO.getInningsPlayed());
+        player1.setWickets(playerDTO.getWickets());
+        player1.setOversBowled(playerDTO.getOversBowled());
+        player1.setRunsConceded(playerDTO.getRunsConceded());
+
+        playerRepo.save(player1);
+        return true;
     }
 
     public void deletePlayer(Long id) {
