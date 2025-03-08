@@ -33,9 +33,13 @@ public class PlayerController {
         return ResponseEntity.ok(new CRUDResponseDTO<>(true, "Player found", player));
     }
 
+    @GetMapping("category/{category}")
+    public List<PlayerDTO> getPlayerByCategory(@PathVariable String category) {
+        return playerService.getAllPlayersByCategory(category);
+    }
+
     @PostMapping
     public ResponseEntity<CRUDResponseDTO<PlayerDTO>> addPlayer(@RequestBody PlayerDTO playerDTO) {
-        playerDTO.setEditable(true);
         playerService.savePlayer(playerDTO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -48,7 +52,9 @@ public class PlayerController {
         if(isUpdated) {
             return ResponseEntity.ok(new CRUDResponseDTO<>(true, "Successfully updated player"));
         }
-        return ResponseEntity.ok(new CRUDResponseDTO<>(false, "Player update failed"));
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new CRUDResponseDTO<>(false, "Player update failed"));
 
     }
 

@@ -1,6 +1,7 @@
 package com.example.spirit11.service;
 
 import com.example.spirit11.dto.PlayerDTO;
+import com.example.spirit11.dto.TournementSummaryDTO;
 import com.example.spirit11.entity.Player;
 import com.example.spirit11.repository.PlayerRepo;
 import org.modelmapper.ModelMapper;
@@ -33,6 +34,7 @@ public class PlayerService {
     }
 
     public void savePlayer(PlayerDTO playerDTO) {
+        playerDTO.setEditable(true);
         playerRepo.save(modelMapper.map(playerDTO, Player.class));
     }
 
@@ -59,4 +61,11 @@ public class PlayerService {
     public void deletePlayer(Long id) {
         playerRepo.deleteById(id);
     }
+
+    public List<PlayerDTO> getAllPlayersByCategory(String category) {
+        return playerRepo.findByCategory(category).stream()
+                .map(player -> modelMapper.map(player, PlayerDTO.class))
+                .collect(Collectors.toList());
+    }
+
 }
