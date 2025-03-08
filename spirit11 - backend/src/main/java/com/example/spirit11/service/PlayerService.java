@@ -7,8 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,9 +25,11 @@ public class PlayerService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<PlayerDTO> getPlayerById(Long id) {
-
-        return Optional.ofNullable(modelMapper.map(playerRepo.findById(id).get(), PlayerDTO.class));
+    public PlayerDTO getPlayerById(Long id) {
+        if(playerRepo.findById(id).isPresent()) {
+            return modelMapper.map(playerRepo.findById(id).get(), PlayerDTO.class);
+        }
+        return null;
     }
 
     public void savePlayer(PlayerDTO playerDTO) {

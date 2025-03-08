@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("player")
@@ -25,10 +24,13 @@ public class PlayerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CRUDResponseDTO<PlayerDTO>> getPlayerById(@PathVariable Long id) {
-        Optional<PlayerDTO> player = playerService.getPlayerById(id);
-        return player.map(playerDTO -> ResponseEntity.ok(new CRUDResponseDTO<>(true, "Player found", playerDTO)))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CRUDResponseDTO<>(false, "Player not found"))
-        );
+        PlayerDTO player = playerService.getPlayerById(id);
+        if(player == null) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new CRUDResponseDTO<>(false, "Player not found"));
+        }
+        return ResponseEntity.ok(new CRUDResponseDTO<PlayerDTO>(true, "Player found", player));
     }
 
     @PostMapping
