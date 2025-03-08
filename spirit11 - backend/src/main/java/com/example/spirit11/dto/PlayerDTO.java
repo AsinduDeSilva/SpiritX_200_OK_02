@@ -1,18 +1,13 @@
-package com.example.spirit11.entity;
+package com.example.spirit11.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "players")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Player {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PlayerDTO {
     private Long id;
     private String name;
     private String university;
