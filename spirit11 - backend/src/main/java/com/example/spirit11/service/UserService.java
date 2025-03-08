@@ -7,6 +7,7 @@ import com.example.spirit11.enums.RoleTypes;
 import com.example.spirit11.repository.CredentialRepo;
 import com.example.spirit11.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,8 +19,12 @@ public class UserService {
     @Autowired
     private CredentialRepo credentialRepo;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public void saveUser(UserDTO userDTO) {
-        Credential credential = new Credential(userDTO.getUsername(), userDTO.getPassword(), RoleTypes.USER);
+        Credential credential = new Credential(userDTO.getUsername(),
+                passwordEncoder.encode(userDTO.getPassword()), RoleTypes.USER);
 
         User user = new User();
         user.setBudget(9000000);
