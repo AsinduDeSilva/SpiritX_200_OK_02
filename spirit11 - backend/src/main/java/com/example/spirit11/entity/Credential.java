@@ -14,7 +14,11 @@ public class Credential {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true, nullable = false)
     String username;
+
+    @Column(nullable = false)
     String password;
 
     public Credential(String username, String password, RoleTypes role) {
