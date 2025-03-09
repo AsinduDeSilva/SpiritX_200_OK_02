@@ -1,0 +1,1 @@
+export const backendSocket = "http://localhost:8080";
