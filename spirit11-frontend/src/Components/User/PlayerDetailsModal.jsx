@@ -1,4 +1,5 @@
 import React from "react";
+import dummyPlayer from "../../assets/dummy-player.png";
 
 const PlayerDetailsModal = ({ player, onClose }) => {
   if (!player) return null;
@@ -17,7 +18,7 @@ const PlayerDetailsModal = ({ player, onClose }) => {
           &times;
         </button>
         <img
-          src={player.image}
+          src={dummyPlayer}
           alt={player.name}
           className="rounded-md mb-4 w-full h-48 object-cover transform transition-transform duration-300 hover:scale-105"
         />

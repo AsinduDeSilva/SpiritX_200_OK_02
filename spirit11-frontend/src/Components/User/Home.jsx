@@ -1,13 +1,25 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import backgroundImg from "../../assets/background-image.jpg"
 import player from "../../assets/player.jpg"
 import team from "../../assets/team.jpg"
 import leaderboard from "../../assets/leaderboard.png"
 import about from "../../assets/about.jpg"
+import { useSelector } from "react-redux";
 
 
 const Home = () => {
+  const {isLogged} = useSelector((state) => state.loggedUser);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(!isLogged){
+      navigate("/signin")
+    } 
+  },[]);
+
+  
+
   return (
     <div className="flex flex-col bg-gray-50">
       <section

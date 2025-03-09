@@ -1,18 +1,47 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Route, useNavigate } from "react-router-dom";
+import { setLoggedUser } from "../../redux/actions";
+import { backendSocket } from "../../constants/backendInfo";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log("Sign In Data:", formData);
+
+    let res =  await fetch(`${backendSocket}/auth`,{
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Basic ${btoa(`${formData.username}:${formData.password}`)}`,
+          },
+        })
+
+    if(res.status == 401){
+      alert("Wrong Credentials!!!")
+      return
+    }
+    
+    let data = await res.json(); 
+    console.log(data)
+        
+    if(data.role == "ROLE_ADMIN"){
+      navigate("/admin")
+    }else{
+      navigate("/")
+    }
+    dispatch(setLoggedUser(data.id, data.role, true, formData.username, formData.password))
+          
+       
   };
+  const dispatch = useDispatch();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

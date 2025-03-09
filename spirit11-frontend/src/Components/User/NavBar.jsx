@@ -1,9 +1,20 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png"
+import logout from "../../assets/logout.png"
+import { setLoggedUser } from "../../redux/actions";
+import { useDispatch } from "react-redux";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutOnClick = () => {
+      navigate("/signin")
+      dispatch(setLoggedUser(null, null, false, null, null))
+  }
+
   return (
     <nav className="bg-[#023E8A]">
       <div className="max-w-7xl mx-auto px-4">
@@ -34,6 +45,10 @@ const Navbar = () => {
             <Link to="/chatbot" className="text-white hover:text-gray-300">
               Spiriter
             </Link>
+          
+            <img src={logout} alt="logout" className="w-14 h-14" onClick={logoutOnClick}/>
+            
+
           </div>
           <div className="md:hidden flex items-center">
             <button
